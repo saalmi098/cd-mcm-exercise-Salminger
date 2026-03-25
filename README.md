@@ -1,7 +1,7 @@
 # Exercise 4: Vulnerability Scanning & Kubernetes Deployment
 
 **Course:** Continuous Delivery in Agile Software Development (Master)
-**Points:** 30
+**Points:** 24
 
 ## Learning Objectives
 
@@ -29,7 +29,7 @@
 
 ## Tasks
 
-### Task 1: Vulnerability Scanning -- Docker Image (8 Points)
+### Task 1: Vulnerability Scanning -- Docker Image (6 Points)
 
 1. **Build the Docker image locally:**
    ```bash
@@ -68,7 +68,7 @@
 
 ---
 
-### Task 2: Vulnerability Scanning -- Dependencies (6 Points)
+### Task 2: Vulnerability Scanning -- Dependencies (4 Points)
 
 1. **Scan Go dependencies:**
    ```bash
@@ -93,7 +93,7 @@
 
 ---
 
-### Task 3: Kubernetes Deployment with Minikube (10 Points)
+### Task 3: Kubernetes Deployment with Minikube (8 Points)
 
 1. **Start Minikube:**
    ```bash
@@ -194,8 +194,8 @@ trivy fs .                            # Scan filesystem/dependencies
 
 | Task | Points |
 |------|--------|
-| Vulnerability Scanning -- Docker Image | 8 |
-| Vulnerability Scanning -- Dependencies | 6 |
-| Kubernetes Deployment with Minikube | 10 |
+| Vulnerability Scanning -- Docker Image | 6 |
+| Vulnerability Scanning -- Dependencies | 4 |
+| Kubernetes Deployment with Minikube | 8 |
 | Production Readiness | 6 |
-| **Total** | **30** |
+| **Total** | **24** |
