@@ -1,59 +1,140 @@
-# Continuous Delivery in Agile Software Development -- Exercises
+# Exercise 3: CI Pipeline -- SonarCloud, Matrix Builds & Linting
 
-This repository contains four progressive exercises for the Master course **Continuous Delivery in Agile Software Development**.
+**Course:** Continuous Delivery in Agile Software Development (Master)
+**Points:** 24
 
-## Overview
+## Learning Objectives
 
-| Exercise | Topic | Branch |
-|----------|-------|--------|
-| 1 | Git Basics: PRs, Interactive Rebase, Unit Tests | `exercise/01-git-basics` |
-| 2 | Microservice Architecture, Docker & GitHub Actions | `exercise/02-microservice-docker` |
-| 3 | CI Pipeline: SonarCloud, Matrix Builds, Linting | `exercise/03-ci-pipeline` |
-| 4 | Vulnerability Scanning & Kubernetes Deployment | `exercise/04-security-k8s` |
-
-## Technology Stack
-
-- **Language:** Go 1.22+
-- **Web Framework:** Gorilla Mux
-- **Database:** PostgreSQL
-- **Containerization:** Docker & Docker Compose
-- **CI/CD:** GitHub Actions
-- **Code Quality:** SonarCloud, golangci-lint
-- **Security:** Trivy, Snyk
-- **Deployment:** Kubernetes (Minikube)
-
-## Project: Product Catalog API
-
-Throughout the exercises, you will build and evolve a RESTful Product Catalog API with CRUD operations, backed by PostgreSQL.
+- Extend a CI pipeline with quality gates and code analysis
+- Configure SonarCloud for static code analysis and coverage tracking
+- Use matrix builds to test across multiple Go versions
+- Integrate linting with golangci-lint
+- Understand code quality metrics and technical debt
 
 ## Prerequisites
 
-- Go 1.22+ installed
-- Git 2.30+
-- GitHub Account
-- Docker Desktop (from Exercise 2)
-- Minikube (Exercise 4)
+- Completed Exercise 2 (working CI pipeline with Docker build)
+- SonarCloud account (free for open-source projects)
+- Understanding of GitHub Actions workflow syntax
 
-## Getting Started
+## What's New in This Exercise
 
-1. **Fork** this repository on GitHub (click the "Fork" button in the top right corner). All exercise branches will be included in your fork.
-2. **Clone** your fork:
+- **Matrix builds** in `.github/workflows/ci.yml` -- test across multiple Go versions
+- **SonarCloud configuration** (`sonar-project.properties`) -- static analysis setup
+- **golangci-lint configuration** (`.golangci.yml`) -- linter rules
+- **Coverage reporting** -- `go test -coverprofile`
 
-```bash
-git clone https://github.com/<your-username>/CI-CD-MCM.git
-cd CI-CD-MCM
-```
+---
 
-3. Switch to the respective exercise branch:
+## Tasks
 
-```bash
-git checkout exercise/01-git-basics
-```
+### Task 1: Matrix Builds (4 Points)
 
-> **Important:** Do not clone the original repository directly — always work on your own fork so you can push changes and create Pull Requests.
+The CI workflow already has a matrix strategy with one Go version. Your tasks:
 
-Each exercise branch contains a detailed `README.md` with instructions.
+1. **Extend the matrix** to include Go versions `1.21` and `1.22` (see the TODO in `ci.yml`).
+2. **Verify** that the pipeline runs tests for both Go versions in parallel.
+3. **Add an OS matrix dimension** (`ubuntu-latest`, `macos-latest`) so tests run on both platforms.
 
-## Authors
-- Prof. M. Kurz
-- Student Name
+**Expected result:** 4 parallel test jobs (2 Go versions x 2 OS).
+
+**Deliverable:** Screenshot of the GitHub Actions matrix view showing all jobs.
+
+---
+
+### Task 2: Linting with golangci-lint (6 Points)
+
+1. **Add a `lint` job** to the CI workflow that:
+   - Runs `golangci-lint` using the `golangci/golangci-lint-action@v4` action
+   - Uses the `.golangci.yml` configuration file
+   - Runs in parallel with the test matrix (does not depend on `test`)
+
+2. **Enable additional linters** in `.golangci.yml` (see TODOs):
+   - `gofmt` -- enforces standard Go formatting
+   - `gocyclo` -- detects overly complex functions
+   - `misspell` -- catches common typos
+   - `gocritic` -- advanced Go code analysis
+
+3. **Fix any linting issues** that are reported in the existing code.
+
+**Deliverable:** Clean lint run (no warnings). Screenshot of the lint job passing.
+
+---
+
+### Task 3: SonarCloud Integration (8 Points)
+
+1. **Create a SonarCloud project:**
+   - Go to [sonarcloud.io](https://sonarcloud.io) and sign in with GitHub.
+   - Import your repository as a new project.
+   - Note your `projectKey` and `organization`.
+
+2. **Configure `sonar-project.properties`:**
+   - Replace `YOUR_PROJECT_KEY` and `YOUR_ORGANIZATION` with your actual values.
+   - Ensure coverage reporting is configured correctly.
+
+3. **Add a SonarCloud job** to the CI workflow:
+   ```yaml
+   sonarcloud:
+     runs-on: ubuntu-latest
+     needs: test
+     steps:
+       - uses: actions/checkout@v4
+         with:
+           fetch-depth: 0
+       - name: Download coverage
+         uses: actions/download-artifact@v4
+         with:
+           name: coverage-1.22
+       - name: SonarCloud Scan
+         uses: SonarSource/sonarqube-scan-action@v5
+         env:
+           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+   ```
+
+4. **Add the `SONAR_TOKEN` secret** to your repository settings.
+
+5. **Review the SonarCloud dashboard:**
+   - What is the code coverage percentage?
+   - Are there any code smells or bugs detected?
+   - What is the technical debt estimate?
+
+**Deliverable:** Link to your SonarCloud project dashboard. Screenshot showing the quality gate result.
+
+---
+
+### Task 4: Code Coverage Improvement (6 Points)
+
+1. **Check current coverage:**
+   ```bash
+   go test -coverprofile=coverage.out ./...
+   go tool cover -func=coverage.out
+   go tool cover -html=coverage.out -o coverage.html
+   ```
+
+2. **Improve coverage to at least 80%** by adding tests for uncovered code paths. Focus on:
+   - Edge cases in handlers (invalid IDs, malformed JSON)
+   - Error paths in the store layer
+   - The `Validate()` method edge cases
+
+3. **Add a coverage threshold check** to the CI pipeline:
+   ```yaml
+   - name: Check coverage threshold
+     run: |
+       COVERAGE=$(go test -coverprofile=coverage.out ./... | grep -oP 'coverage: \K[0-9.]+')
+       echo "Coverage: ${COVERAGE}%"
+       # TODO: Fail if coverage is below 80%
+   ```
+
+**Deliverable:** Coverage report showing >= 80%. Updated tests.
+
+---
+
+## Grading
+
+| Task | Points |
+|------|--------|
+| Matrix Builds | 4 |
+| Linting with golangci-lint | 6 |
+| SonarCloud Integration | 8 |
+| Code Coverage Improvement | 6 |
+| **Total** | **24** |
