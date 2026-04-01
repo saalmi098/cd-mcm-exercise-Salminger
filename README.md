@@ -68,6 +68,72 @@ Requirements:
 
 **Deliverable:** Completed test file committed on a `feature/unit-tests` branch.
 
+#### Go Testing Hints
+
+If you're new to Go testing, here are some tips to get you started:
+
+**Basic test structure:**
+```go
+func TestSomething(t *testing.T) {
+    // 1. Arrange -- set up test data
+    store := NewMemoryStore()
+    p := model.Product{Name: "Test", Price: 9.99}
+
+    // 2. Act -- call the function under test
+    created := store.Create(p)
+
+    // 3. Assert -- check the result
+    if created.Name != "Test" {
+        t.Errorf("expected name 'Test', got '%s'", created.Name)
+    }
+}
+```
+
+**Comparing errors:**
+```go
+if err != ErrNotFound {
+    t.Errorf("expected ErrNotFound, got %v", err)
+}
+```
+
+**Table-driven tests** (test multiple cases in one function):
+```go
+func TestValidation(t *testing.T) {
+    tests := []struct {
+        name    string
+        product model.Product
+        want    bool
+    }{
+        {"valid product", model.Product{Name: "X", Price: 1.0}, true},
+        {"empty name", model.Product{Name: "", Price: 1.0}, false},
+        {"negative price", model.Product{Name: "X", Price: -1.0}, false},
+    }
+
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            got := tt.product.Validate()
+            if got != tt.want {
+                t.Errorf("%s: got %v, want %v", tt.name, got, tt.want)
+            }
+        })
+    }
+}
+```
+
+**Useful commands:**
+```bash
+go test -v ./internal/store/   # Verbose output -- see each test name and result
+go test -run TestCreate ./...  # Run only tests matching "TestCreate"
+```
+
+**Available store methods** (see `internal/store/memory.go`):
+- `NewMemoryStore()` -- creates a new empty store
+- `store.Create(product)` -- returns the product with assigned ID
+- `store.GetByID(id)` -- returns `(product, error)`
+- `store.GetAll()` -- returns `[]Product`
+- `store.Update(id, product)` -- returns `(product, error)`
+- `store.Delete(id)` -- returns `error`
+
 ---
 
 ### Task 3: Feature Branch & Pull Request (8 Points)
