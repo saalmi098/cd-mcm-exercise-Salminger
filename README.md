@@ -230,3 +230,7 @@ Use these prefixes for all commit messages:
 | Feature Branch & PR | 8 |
 | Interactive Rebase | 8 |
 | **Total** | **24** |
+
+## Author
+- FH-Prof. Dr. Marc Kurz (marc.kurz@fh-hagenberg.at)
+
