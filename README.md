@@ -78,7 +78,7 @@ By the end of the course, you will have a fully containerized Go microservice wi
 
 ## Getting Started
 
-1. **Fork** this repository on GitHub (click the "Fork" button in the top right corner). All exercise branches will be included in your fork.
+1. **Fork** this repository on GitHub (click the "Fork" button in the top right corner). **Uncheck** "Copy the `main` branch only" so that all exercise branches are included in your fork.
 2. **Clone** your fork:
 
 ```bash
