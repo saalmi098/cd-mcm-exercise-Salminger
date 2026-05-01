@@ -89,3 +89,61 @@ A single-stage build keeps all of that in the final image:
 Multi-stage discards the entire builder layer. The runtime stage starts from `alpine:3.19` (~7 MB) and copies only the compiled binary (~10 MB). Nothing else survives into the final image.
 
 **Multi-stage is 19× smaller (18.2 MB vs 349 MB).**
+
+### CRUD Tests
+
+```bash
+$ curl -X POST http://localhost:8080/products   -H "Content-Type: application/json"   -d '{"name":"TV","price":1099.99}'
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    66  100    37  100    29  33124  25962 --:--:-- --:--:-- --:--:-- 66000{"id":4,"name":"TV","price":1099.99}
+
+
+$ curl -X POST http://localhost:8080/products   -H "Content-Type: application/json"   -d '{"name":"iPhone","price":899.99}'
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    72  100    40  100    32  35492  28393 --:--:-- --:--:-- --:--:-- 72000{"id":5,"name":"iPhone","price":899.99}
+
+
+$ curl -X POST http://localhost:8080/products   -H "Content-Type: application/json"   -d '{"name":"Monitor","price":129.99}'
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    74  100    41  100    33  36771  29596 --:--:-- --:--:-- --:--:-- 74000{"id":6,"name":"Monitor","price":129.99}
+
+
+$ curl http://localhost:8080/products
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   120  100   120    0     0   8487      0 --:--:-- --:--:-- --:--:--  8571[{"id":4,"name":"TV","price":1099.99},{"id":5,"name":"iPhone","price":899.99},{"id":6,"name":"Monitor","price":129.99}]
+
+
+$ curl -X DELETE http://localhost:8080/products/1
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    30  100    30    0     0  25996      0 --:--:-- --:--:-- --:--:-- 30000{"error":"Product not found"}
+
+
+$ curl http://localhost:8080/products/5
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    40  100    40    0     0  37700      0 --:--:-- --:--:-- --:--:-- 40000{"id":5,"name":"iPhone","price":899.99}
+
+
+$ curl -X DELETE http://localhost:8080/products/5
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    21  100    21    0     0   1419      0 --:--:-- --:--:-- --:--:--  1500{"result":"success"}
+
+
+$ curl http://localhost:8080/products/5
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    30  100    30    0     0  28462      0 --:--:-- --:--:-- --:--:-- 30000{"error":"Product not found"}
+```
+
+Products still exist after restarting docker containers with:
+
+```
+docker compose down
+docker compose up
+```
