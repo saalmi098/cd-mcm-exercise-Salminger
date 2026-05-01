@@ -141,5 +141,3 @@ Products still exist after restarting docker containers with:
 docker compose down
 docker compose up
 ```
-
-
