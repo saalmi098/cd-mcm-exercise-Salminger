@@ -55,3 +55,11 @@ flowchart TD
 Working CI pipeline:
 
 TODO
+
+### Docker Image in Container Registry
+
+Docker Image pushed to GitHub Container Registry on main:
+
+https://github.com/saalmi098/cd-mcm-exercise-Salminger/pkgs/container/product-catalog
+
+![Docker Image](built-docker-image.png)
