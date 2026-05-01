@@ -83,3 +83,15 @@ https://github.com/saalmi098/cd-mcm-exercise-Salminger/pkgs/container/product-ca
 ## Task 3: Docker & Docker Compose
 
 See [DOCKER.md](DOCKER.md)
+
+## Task 4: Handler Tests
+
+Command:
+
+```
+go test -v ./internal/handler/
+```
+
+All required tests passing:
+
+![Handler Tests](handler-tests.png)
