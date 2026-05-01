@@ -93,52 +93,46 @@ Multi-stage discards the entire builder layer. The runtime stage starts from `al
 ### CRUD Tests
 
 ```bash
+$ curl http://localhost:8080/products
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100     3  100     3    0     0    358      0 --:--:-- --:--:-- --:--:--   375[]
+
+
 $ curl -X POST http://localhost:8080/products   -H "Content-Type: application/json"   -d '{"name":"TV","price":1099.99}'
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100    66  100    37  100    29  33124  25962 --:--:-- --:--:-- --:--:-- 66000{"id":4,"name":"TV","price":1099.99}
+100    66  100    37  100    29   3134   2456 --:--:-- --:--:-- --:--:--  6000{"id":1,"name":"TV","price":1099.99}
 
 
 $ curl -X POST http://localhost:8080/products   -H "Content-Type: application/json"   -d '{"name":"iPhone","price":899.99}'
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100    72  100    40  100    32  35492  28393 --:--:-- --:--:-- --:--:-- 72000{"id":5,"name":"iPhone","price":899.99}
+100    72  100    40  100    32   2330   1864 --:--:-- --:--:-- --:--:--  4235{"id":2,"name":"iPhone","price":899.99}
 
 
 $ curl -X POST http://localhost:8080/products   -H "Content-Type: application/json"   -d '{"name":"Monitor","price":129.99}'
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100    74  100    41  100    33  36771  29596 --:--:-- --:--:-- --:--:-- 74000{"id":6,"name":"Monitor","price":129.99}
+100    74  100    41  100    33   9451   7607 --:--:-- --:--:-- --:--:-- 18500{"id":3,"name":"Monitor","price":129.99}
 
 
 $ curl http://localhost:8080/products
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100   120  100   120    0     0   8487      0 --:--:-- --:--:-- --:--:--  8571[{"id":4,"name":"TV","price":1099.99},{"id":5,"name":"iPhone","price":899.99},{"id":6,"name":"Monitor","price":129.99}]
+100   120  100   120    0     0  39331      0 --:--:-- --:--:-- --:--:-- 40000[{"id":1,"name":"TV","price":1099.99},{"id":2,"name":"iPhone","price":899.99},{"id":3,"name":"Monitor","price":129.99}]
 
 
 $ curl -X DELETE http://localhost:8080/products/1
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100    30  100    30    0     0  25996      0 --:--:-- --:--:-- --:--:-- 30000{"error":"Product not found"}
+100    21  100    21    0     0   1928      0 --:--:-- --:--:-- --:--:--  2100{"result":"success"}
 
 
-$ curl http://localhost:8080/products/5
+$ curl http://localhost:8080/products/1
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100    40  100    40    0     0  37700      0 --:--:-- --:--:-- --:--:-- 40000{"id":5,"name":"iPhone","price":899.99}
-
-
-$ curl -X DELETE http://localhost:8080/products/5
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100    21  100    21    0     0   1419      0 --:--:-- --:--:-- --:--:--  1500{"result":"success"}
-
-
-$ curl http://localhost:8080/products/5
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100    30  100    30    0     0  28462      0 --:--:-- --:--:-- --:--:-- 30000{"error":"Product not found"}
+100    30  100    30    0     0   9448      0 --:--:-- --:--:-- --:--:-- 10000{"error":"Product not found"}
 ```
 
 Products still exist after restarting docker containers with:
@@ -147,3 +141,5 @@ Products still exist after restarting docker containers with:
 docker compose down
 docker compose up
 ```
+
+
