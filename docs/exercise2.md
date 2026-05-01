@@ -79,3 +79,7 @@ Additionally, changes on main builds Docker Images and pushes to GitHub Containe
 https://github.com/saalmi098/cd-mcm-exercise-Salminger/pkgs/container/product-catalog
 
 ![Docker Image](built-docker-image.png)
+
+## Task 3: Docker & Docker Compose
+
+See [DOCKER.md](DOCKER.md)
