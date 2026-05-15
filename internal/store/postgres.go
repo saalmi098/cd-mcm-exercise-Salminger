@@ -29,6 +29,11 @@ func NewPostgresStore(host, port, user, password, dbname string) (*PostgresStore
 	return &PostgresStore{DB: db}, nil
 }
 
+// Ping checks the database connection.
+func (s *PostgresStore) Ping() error {
+	return s.DB.Ping()
+}
+
 // EnsureTable creates the products table if it does not exist.
 func (s *PostgresStore) EnsureTable() error {
 	_, err := s.DB.Exec(`
