@@ -9,7 +9,6 @@ type Product struct {
 
 // Validate checks whether the product has valid fields.
 func (p *Product) Validate() bool {
-	// this recieves a pointer to the product
 	if p.Name == "" {
 		return false
 	}
