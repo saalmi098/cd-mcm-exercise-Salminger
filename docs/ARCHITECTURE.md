@@ -36,11 +36,13 @@ flowchart TD
 | Health check | Always OK | Pings DB (`db.Ping()`) |
 
 **When to use MemoryStore:**
+
 - Fast, local development without Docker/DB setup
 - Unit tests that don't need persistence
 - Demos, prototypes, quick experiments
 
 **When to use PostgresStore:**
+
 - Production (data must survive restarts)
 - Multiple app instances (containers, replicas) sharing state
 - Datasets larger than available RAM
@@ -52,6 +54,44 @@ flowchart TD
 
 ## Task 2: GitHub Actions Workflow
 
-Working CI pipeline:
+### Working CI pipeline
 
-TODO
+#### Pull Request
+
+https://github.com/saalmi098/cd-mcm-exercise-Salminger/pull/4
+
+![PR Pipeline passed](pr-pipeline-passed.png)
+
+#### Actions Run
+
+https://github.com/saalmi098/cd-mcm-exercise-Salminger/actions/runs/25211773875
+
+![Actions Run](actions-run.png)
+
+#### Status Badge
+
+![CI Status Badge](ci-status-badge.png)
+
+### Docker Image in Container Registry
+
+Additionally, changes on main builds Docker Images and pushes to GitHub Container Registry:
+
+https://github.com/saalmi098/cd-mcm-exercise-Salminger/pkgs/container/product-catalog
+
+![Docker Image](built-docker-image.png)
+
+## Task 3: Docker & Docker Compose
+
+See [DOCKER.md](DOCKER.md)
+
+## Task 4: Handler Tests
+
+Command:
+
+```
+go test -v ./internal/handler/
+```
+
+All required tests passing:
+
+![Handler Tests](handler-tests.png)
