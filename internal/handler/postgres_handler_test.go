@@ -15,7 +15,7 @@ import (
 type mockPostgresStore struct {
 	pingErr    error
 	products   []model.Product
-	getAllErr   error
+	getAllErr  error
 	getByIDErr error
 	createErr  error
 	updateErr  error
