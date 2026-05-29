@@ -1,10 +1,14 @@
 # CDMA Exercise 4: SALMINGER
 
+Link to repo: [https://github.com/saalmi098/cd-mcm-exercise-Salminger/tree/exercise/04-security-k8s](https://github.com/saalmi098/cd-mcm-exercise-Salminger/tree/exercise/04-security-k8s)
+
+Link to actions: [https://github.com/saalmi098/cd-mcm-exercise-Salminger/actions](https://github.com/saalmi098/cd-mcm-exercise-Salminger/actions)
+
 ## Task 1: Docker Image Scanning
 
 ### Before (alpine:3.19)
 
-Total: 10 vulnerabilities — CRITICAL: 0, HIGH: 2, MEDIUM: 5, LOW: 3
+Total: 10 vulnerabilities - CRITICAL: 0, HIGH: 2, MEDIUM: 5, LOW: 3
 
 ![](img/ex4-task1-1.jpg)
 
@@ -12,7 +16,7 @@ All 10 from `alpine:3.19` base (busybox, musl, ssl_client). Go binary: 0 vulns.
 
 ### Optimization: Switch to distroless
 
-Changed runtime base to `gcr.io/distroless/static-debian12` — no shell, no package manager, no busybox/musl.
+Changed runtime base to `gcr.io/distroless/static-debian12` - no shell, no package manager, no busybox/musl.
 
 ### After (distroless/static-debian12)
 
@@ -64,3 +68,21 @@ Added `toolchain go1.26.3` to `go.mod` to pin Go toolchain to patched version.
 After fixing go.mod:
 
 ![](img/ex4-task2-1.png)
+
+## Task 3: Kubernetes Deployment
+
+Deployment Verification:
+
+![](img/ex4-task3-1.png)
+
+API calls:
+
+![](img/ex4-task3-2.png)
+
+Logs:
+
+![](img/ex4-task3-3.png)
+
+## Task 4: Production Readiness
+
+See [k8s.md](k8s.md)
